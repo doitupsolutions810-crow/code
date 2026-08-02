@@ -1,0 +1,9 @@
+apiVersion: v2
+name: sacp-platform
+description: Sovereign AI Control Plane control-plane and governed agent runtime
+version: 0.1.0
+appVersion: "0.1.0"
+type: application
+keywords: [ai, governance, attestation, sandbox]
+maintainers:
+  - name: doitupsolutions810-crow
