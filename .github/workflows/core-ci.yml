@@ -1,0 +1,18 @@
+name: SACP Core Diagnostic
+on:
+  pull_request:
+  push:
+    branches: ['sacp/**']
+permissions:
+  contents: read
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm runner startup
+        run: |
+          set -euo pipefail
+          echo "SACP_RUNNER_STARTED"
+          uname -a
+          python3 --version
+          node --version
