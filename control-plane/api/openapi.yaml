@@ -1,0 +1,65 @@
+openapi: 3.1.0
+info:
+  title: Sovereign AI Control Plane
+  version: 0.1.0
+paths:
+  /health:
+    get:
+      operationId: health
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status: {const: ok}
+  /v1/artifacts:
+    post:
+      operationId: registerArtifact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Artifact'}
+      responses:
+        '202': {description: Accepted}
+  /v1/deploy:
+    post:
+      operationId: deploy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/DeployRequest'}
+      responses:
+        '202': {description: Verification scheduled}
+        '400': {description: Invalid request}
+  /v1/attestations:
+    get:
+      operationId: listAttestations
+      responses:
+        '200': {description: Attestations}
+components:
+  schemas:
+    Artifact:
+      type: object
+      additionalProperties: false
+      required: [ref]
+      properties:
+        ref: {type: string, minLength: 1}
+        signature: {type: [string, 'null']}
+        provenance: {type: [string, 'null']}
+    DeployRequest:
+      type: object
+      additionalProperties: false
+      required: [artifact, agent_id]
+      properties:
+        artifact: {$ref: '#/components/schemas/Artifact'}
+        agent_id: {type: string, pattern: '^[A-Za-z0-9._:-]{3,128}$'}
+        command:
+          type: array
+          items: {type: string}
+          minItems: 1
